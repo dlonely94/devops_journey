@@ -1,21 +1,15 @@
+from flask import Flask, jsonify
 import psutil
-import datetime
 
-now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+app = Flask(__name__)
 
-cpu_usage = psutil.cpu_percent(interval=1)
-ram_info = psutil.virtual_memory()
-ram_used_gb = ram_info.used / (1024**3)
 
-log_msg = (
-    f"{now} | CPU: {cpu_usage}% | RAM Used: {ram_used_gb} GB ({ram_info.percent}%)\n"
-)
-print(log_msg.strip())
-with open("monitor.log", "a") as f:
-    f.write(log_msg)
+@app.route("/")
+def monitor():
+    cpu = psutil.cpu_percent()
+    ram = psutil.virtual_memory().percent
+    return jsonify({"status": "Running", "cpu_usage": f"{cpu}", "ram_usage": f"{ram}"})
 
-if ram_info.percent > 80:
-    alert_msg = f"{now} | WARNING: RAM usage is high ({ram_info.percent}%)\n"
-    print(alert_msg.strip())
-    with open("monitor.log", "a") as f:
-        f.writable(alert_msg)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

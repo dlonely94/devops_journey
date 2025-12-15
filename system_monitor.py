@@ -8,7 +8,9 @@ app = Flask(__name__)
 def monitor():
     cpu = psutil.cpu_percent()
     ram = psutil.virtual_memory().percent
-    return jsonify({"status": "Running", "cpu_usage": f"{cpu}", "ram_usage": f"{ram}"})
+    return jsonify(
+        {"status": "Running version 2.0", "cpu_usage": f"{cpu}", "ram_usage": f"{ram}"}
+    )
 
 
 if __name__ == "__main__":

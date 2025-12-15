@@ -34,7 +34,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ubuntu
         key: ${{ secrets.SSH_KEY }}
-        scripts: |
+        script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/monitor-web:latest
           docker rm -f monitor-web || true
           docker run -d -p 5000:5000 --name monitor-web --restart always ${{ secrets.DOCKER_USERNAME }}/monitor-web:latest
